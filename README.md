@@ -8,6 +8,8 @@
 - [Getting Started](#getting-started)
 - [Available Scripts](#available-scripts)
 - [Dependencies](#dependencies)
+- [Screenshots](#screenshots)
+- [Authors](#authors)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -110,6 +112,13 @@ In the project directory, you can run:
 • React Router - For handling page routing.
 
 • Context API - For managing global state (e.g., CartContext).
+
+## screenshots
+
+Check the screenshots of UI.
+
+## Authors
+- **Rakeshjambula** - [Your GitHub](https://github.com/RakeshJambula)
 
 ## contributing
 
