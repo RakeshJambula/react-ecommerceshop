@@ -267,4 +267,33 @@ export default class ApiService {
   static isAdmin() {
     return localStorage.getItem("role") === "ADMIN";
   }
+
+  // ---------------- ORDER TRACKING APIs ----------------
+
+  static async getOrderTimeline(orderId) {
+    const response = await axios.get(
+      `${this.BASE_URL}/order/${orderId}/timeline`,
+      { headers: this.getHeader() }
+    );
+    return response.data;
+  }
+
+  // ---------------- NOTIFICATION APIs ----------------
+
+  static async getUserNotifications(userId) {
+    const response = await axios.get(
+      `${this.BASE_URL}/notifications/user/${userId}`,
+      { headers: this.getHeader() }
+    );
+    return response.data;
+  }
+
+  static async markNotificationAsRead(id) {
+    const response = await axios.post(
+      `${this.BASE_URL}/notifications/${id}/read`,
+      {},
+      { headers: this.getHeader() }
+    );
+    return response.data;
+  }
 }

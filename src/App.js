@@ -22,7 +22,9 @@ import AddProductPage from "./component/admin/AddProductPage";
 import EditProductPage from "./component/admin/EditProductPage";
 import AdminOrdersPage from "./component/admin/AdminOrderPage";
 import AdminOrderDetailsPage from "./component/admin/AdminOrderDetailsPage";
-// import PaymentPage from "./pages/payment/PaymentPage";
+// import PaymentPage from "./component/pages/PaymentPage";
+import NotificationsPage from "./component/pages/NotificationsPage";
+import TrackOrder from "./component/pages/TrackOrder";
 
 function App() {
   return (
@@ -92,6 +94,12 @@ function App() {
           <Route
             path="/admin/order-details/:itemId"
             element={<AdminRoute element={<AdminOrderDetailsPage />} />}
+          />
+          <Route path="/track-order/:orderId" element={<TrackOrder />} />
+
+          <Route
+            path="/notifications"
+            element={<ProtectedRoute element={<NotificationsPage />} />}
           />
         </Routes>
         <Footer />
