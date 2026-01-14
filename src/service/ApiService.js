@@ -296,4 +296,40 @@ export default class ApiService {
     );
     return response.data;
   }
+
+  // ---------------- REVIEW APIs ----------------
+
+  static async getReviewsByProduct(productId) {
+    const response = await axios.get(
+      `${this.BASE_URL}/reviews/product/${productId}`,
+      { headers: this.getHeader() }
+    );
+    return response.data;
+  }
+
+  static async addReview(reviewData) {
+    const response = await axios.post(
+      `${this.BASE_URL}/reviews/add`,
+      reviewData,
+      { headers: this.getHeader() }
+    );
+    return response.data;
+  }
+
+  static async updateReview(reviewId, reviewData) {
+    const response = await axios.put(
+      `${this.BASE_URL}/reviews/update/${reviewId}`,
+      reviewData,
+      { headers: this.getHeader() }
+    );
+    return response.data;
+  }
+
+  static async deleteReview(reviewId) {
+    const response = await axios.delete(
+      `${this.BASE_URL}/reviews/delete/${reviewId}`,
+      { headers: this.getHeader() }
+    );
+    return response.data;
+  }
 }

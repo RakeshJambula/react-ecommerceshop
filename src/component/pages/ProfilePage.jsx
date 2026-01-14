@@ -114,6 +114,16 @@ const ProfilePage = () => {
                     <strong>Status: </strong>
                     {order.status}
                   </p>
+
+                  {order.status === "DELIVERED" && (
+                    <button
+                      className="review-btn"
+                      onClick={() => navigate(`/product/${order.product.id}`)}
+                    >
+                      Write Review
+                    </button>
+                  )}
+
                   <p>
                     <strong>Quantity: </strong>
                     {order.quantity}
