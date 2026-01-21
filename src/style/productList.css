@@ -94,3 +94,25 @@
   font-size: 1.2em;
   color: #333;
 }
+.image-container {
+  position: relative;
+}
+
+.wishlist-heart {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 28px;
+  cursor: pointer;
+  color: white;
+  z-index: 10;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.wishlist-heart:hover {
+  transform: scale(1.2);
+}
+
+.wishlist-heart.active {
+  color: red;
+}

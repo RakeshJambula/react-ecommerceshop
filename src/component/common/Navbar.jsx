@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../style/navbar.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import ApiService from "../../service/ApiService";
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaHeart } from "react-icons/fa";
 
 const Navbar = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -55,6 +55,11 @@ const Navbar = () => {
         {isAuthenticated && <NavLink to="/profile">My Account</NavLink>}
         {isAdmin && <NavLink to="/admin">Admin</NavLink>}
         {!isAuthenticated && <NavLink to="/login">Login</NavLink>}
+        {isAuthenticated && (
+          <NavLink to="/wishlist" title="Wishlist">
+            <FaHeart size={18} />
+          </NavLink>
+        )}
         {isAuthenticated && (
           <NavLink to="/notifications" title="Notifications">
             <FaBell size={18} />

@@ -13,7 +13,9 @@
 
 .product-detail img {
   width: 100%;
-  height: auto;
+  /* height: auto; */
+  height: 220px;
+  object-fit: cover;
   border-radius: 8px;
 }
 

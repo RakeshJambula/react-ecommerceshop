@@ -25,6 +25,7 @@ import AdminOrderDetailsPage from "./component/admin/AdminOrderDetailsPage";
 // import PaymentPage from "./component/pages/PaymentPage";
 import NotificationsPage from "./component/pages/NotificationsPage";
 import TrackOrder from "./component/pages/TrackOrder";
+import Wishlist from "./component/pages/Wishlist";
 
 function App() {
   return (
@@ -101,6 +102,7 @@ function App() {
             path="/notifications"
             element={<ProtectedRoute element={<NotificationsPage />} />}
           />
+          <Route path="/wishlist" element={<Wishlist />} />
         </Routes>
         <Footer />
       </CartProvider>
