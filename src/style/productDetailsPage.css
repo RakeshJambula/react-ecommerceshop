@@ -182,3 +182,12 @@
   color: gray;
   margin-bottom: 5px;
 }
+.out-of-stock {
+  background-color: #e74c3c !important;
+  color: white !important;
+  cursor: not-allowed !important;
+}
+
+.out-of-stock:hover {
+  background-color: #e74c3c !important;
+}

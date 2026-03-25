@@ -12,11 +12,19 @@ const CartPage = () => {
   const navigate = useNavigate();
 
   const incrementItem = (product) => {
+    const cartItem = cart.find((item) => item.id === product.id);
+
+    if (cartItem.quantity >= Number(product.stock)) {
+      setMessage("Maximum stock reached");
+      return;
+    }
+
     dispatch({ type: "INCREMENT_ITEM", payload: product });
   };
 
   const decrementItem = (product) => {
     const cartItem = cart.find((item) => item.id === product.id);
+
     if (cartItem && cartItem.quantity > 1) {
       dispatch({ type: "DECREMENT_ITEM", payload: product });
     } else {
@@ -26,8 +34,10 @@ const CartPage = () => {
 
   const totalPrice = cart.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+    0,
   );
+
+  const hasOutOfStock = cart.some((item) => Number(item.stock ?? 0) === 0);
 
   const placeCodOrder = async () => {
     const orderItems = cart.map((item) => ({
@@ -37,7 +47,7 @@ const CartPage = () => {
 
     const orderRequest = {
       totalPrice,
-      paymentType: "COD",
+      paymentMethod: "COD",
       items: orderItems,
     };
 
@@ -60,7 +70,7 @@ const CartPage = () => {
 
     const orderRequest = {
       totalPrice,
-      paymentType: "ONLINE",
+      paymentMethod: "ONLINE",
       items: orderItems,
     };
 
@@ -98,17 +108,24 @@ const CartPage = () => {
   };
 
   const handleCheckoutClick = () => {
+    if (hasOutOfStock) {
+      setMessage("Some items are out of stock. Please remove them.");
+      return;
+    }
+
     if (!ApiService.isAuthenticated()) {
       setMessage("You need to login first");
       setTimeout(() => navigate("/login"), 2000);
       return;
     }
+
     setShowPaymentOptions(true);
   };
 
   return (
     <div className="cart-page">
       <h1>Cart</h1>
+
       {message && <p className="response-message">{message}</p>}
 
       {cart.length === 0 ? (
@@ -123,6 +140,7 @@ const CartPage = () => {
                 <button className="payment-btn cod" onClick={placeCodOrder}>
                   Cash On Delivery
                 </button>
+
                 <button
                   className="payment-btn online"
                   onClick={handleOnlinePayment}
@@ -134,27 +152,75 @@ const CartPage = () => {
           ) : (
             <>
               <ul>
-                {cart.map((item) => (
-                  <li key={item.id}>
-                    <img src={item.imageUrl} alt={item.name} />
-                    <div>
-                      <h2>{item.name}</h2>
-                      <p>{item.description}</p>
+                {cart.map((item) => {
+                  const stock = Number(item.stock ?? 0);
 
-                      <div className="quantity-controls">
-                        <button onClick={() => decrementItem(item)}>-</button>
-                        <span>{item.quantity}</span>
-                        <button onClick={() => incrementItem(item)}>+</button>
+                  return (
+                    <li key={item.id}>
+                      <img src={item.imageUrl} alt={item.name} />
+
+                      <div>
+                        <h2>{item.name}</h2>
+                        <p>{item.description}</p>
+
+                        {stock === 0 ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "10px",
+                              alignItems: "center",
+                            }}
+                          >
+                            <button disabled className="out-of-stock">
+                              Out Of Stock
+                            </button>
+
+                            <button
+                              className="remove-btn"
+                              onClick={() =>
+                                dispatch({ type: "REMOVE_ITEM", payload: item })
+                              }
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="quantity-controls">
+                            <button onClick={() => decrementItem(item)}>
+                              -
+                            </button>
+
+                            <span>{item.quantity}</span>
+
+                            <button
+                              onClick={() => incrementItem(item)}
+                              disabled={item.quantity >= stock}
+                            >
+                              +
+                            </button>
+                          </div>
+                        )}
+
+                        <span>₹{item.price.toFixed()}</span>
                       </div>
-
-                      <span>₹{item.price.toFixed()}</span>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
+
+              {hasOutOfStock && (
+                <p style={{ color: "red", fontWeight: "bold" }}>
+                  Some items are out of stock. Remove them before checkout.
+                </p>
+              )}
+
               <h2>Total: ₹{totalPrice.toFixed(2)}</h2>
 
-              <button className="checkout-button" onClick={handleCheckoutClick}>
+              <button
+                className="checkout-button"
+                onClick={handleCheckoutClick}
+                disabled={hasOutOfStock}
+              >
                 Checkout
               </button>
             </>
