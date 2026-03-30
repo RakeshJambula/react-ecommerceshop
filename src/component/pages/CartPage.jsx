@@ -6,10 +6,24 @@ import "../../style/cart.css";
 
 const CartPage = () => {
   const { cart, dispatch } = useCart();
+
   const [message, setMessage] = useState(null);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
+  // Coupon
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [finalAmount, setFinalAmount] = useState(0);
+
   const navigate = useNavigate();
+
+  // ----------------- CART ACTIONS -----------------
+
+  const resetCoupon = () => {
+    setDiscount(0);
+    setFinalAmount(0);
+    setCouponCode("");
+  };
 
   const incrementItem = (product) => {
     const cartItem = cart.find((item) => item.id === product.id);
@@ -20,6 +34,7 @@ const CartPage = () => {
     }
 
     dispatch({ type: "INCREMENT_ITEM", payload: product });
+    resetCoupon();
   };
 
   const decrementItem = (product) => {
@@ -30,7 +45,11 @@ const CartPage = () => {
     } else {
       dispatch({ type: "REMOVE_ITEM", payload: product });
     }
+
+    resetCoupon();
   };
+
+  // ----------------- CALCULATIONS -----------------
 
   const totalPrice = cart.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -39,39 +58,67 @@ const CartPage = () => {
 
   const hasOutOfStock = cart.some((item) => Number(item.stock ?? 0) === 0);
 
-  const placeCodOrder = async () => {
-    const orderItems = cart.map((item) => ({
+  // ----------------- COUPON -----------------
+
+  const applyCoupon = async () => {
+    if (!couponCode) {
+      setMessage("Please enter coupon code");
+      return;
+    }
+
+    try {
+      const response = await ApiService.validateCoupon({
+        couponCode,
+        amount: totalPrice,
+      });
+
+      setDiscount(response.discount);
+      setFinalAmount(response.finalAmount);
+
+      setMessage("Coupon applied successfully");
+    } catch (err) {
+      setDiscount(0);
+      setFinalAmount(0);
+      setMessage(err.response?.data?.message || "Invalid coupon");
+    }
+
+    setTimeout(() => setMessage(""), 3000);
+  };
+
+  // ----------------- ORDER -----------------
+
+  const buildOrderItems = () =>
+    cart.map((item) => ({
       productId: item.id,
       quantity: item.quantity,
     }));
 
+  const placeCodOrder = async () => {
     const orderRequest = {
-      totalPrice,
       paymentMethod: "COD",
-      items: orderItems,
+      items: buildOrderItems(),
+      couponCode: couponCode || null,
     };
 
     try {
       const response = await ApiService.createOrder(orderRequest);
-      setMessage(response.message);
+
+      setMessage(`Order placed! Final Amount: ₹${response.data.totalPrice}`);
+
       dispatch({ type: "CLEAR_CART" });
+      resetCoupon();
     } catch (err) {
-      setMessage("COD Order failed");
+      setMessage(err.response?.data?.message || "COD Order failed");
     }
 
     setTimeout(() => setMessage(""), 3000);
   };
 
   const handleOnlinePayment = async () => {
-    const orderItems = cart.map((item) => ({
-      productId: item.id,
-      quantity: item.quantity,
-    }));
-
     const orderRequest = {
-      totalPrice,
       paymentMethod: "ONLINE",
-      items: orderItems,
+      items: buildOrderItems(),
+      couponCode: couponCode || null,
     };
 
     try {
@@ -90,7 +137,9 @@ const CartPage = () => {
           try {
             await ApiService.verifyPayment(response);
             setMessage("Payment Successful! Order Confirmed.");
+
             dispatch({ type: "CLEAR_CART" });
+            resetCoupon();
           } catch (err) {
             setMessage("Payment Verification Failed");
           }
@@ -114,13 +163,15 @@ const CartPage = () => {
     }
 
     if (!ApiService.isAuthenticated()) {
-      setMessage("You need to login first");
+      setMessage("Login required");
       setTimeout(() => navigate("/login"), 2000);
       return;
     }
 
     setShowPaymentOptions(true);
   };
+
+  // ----------------- UI -----------------
 
   return (
     <div className="cart-page">
@@ -163,14 +214,9 @@ const CartPage = () => {
                         <h2>{item.name}</h2>
                         <p>{item.description}</p>
 
+                        {/* STOCK HANDLING */}
                         {stock === 0 ? (
-                          <div
-                            style={{
-                              display: "flex",
-                              gap: "10px",
-                              alignItems: "center",
-                            }}
-                          >
+                          <div style={{ display: "flex", gap: "10px" }}>
                             <button disabled className="out-of-stock">
                               Out Of Stock
                             </button>
@@ -178,7 +224,10 @@ const CartPage = () => {
                             <button
                               className="remove-btn"
                               onClick={() =>
-                                dispatch({ type: "REMOVE_ITEM", payload: item })
+                                dispatch({
+                                  type: "REMOVE_ITEM",
+                                  payload: item,
+                                })
                               }
                             >
                               Remove
@@ -201,20 +250,44 @@ const CartPage = () => {
                           </div>
                         )}
 
-                        <span>₹{item.price.toFixed()}</span>
+                        <span>₹{item.price.toFixed(2)}</span>
                       </div>
                     </li>
                   );
                 })}
               </ul>
 
+              {/* OUT OF STOCK WARNING */}
               {hasOutOfStock && (
                 <p style={{ color: "red", fontWeight: "bold" }}>
                   Some items are out of stock. Remove them before checkout.
                 </p>
               )}
 
-              <h2>Total: ₹{totalPrice.toFixed(2)}</h2>
+              {/* COUPON */}
+              <div className="coupon-section">
+                <input
+                  type="text"
+                  placeholder="Enter coupon.."
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                />
+
+                <button className="apply-btn" onClick={applyCoupon}>
+                  Apply
+                </button>
+              </div>
+
+              {/* PRICE DETAILS */}
+              <div style={{ marginTop: "20px" }}>
+                <h3>Subtotal: ₹{totalPrice.toFixed(2)}</h3>
+
+                {discount > 0 && (
+                  <h3 style={{ color: "green" }}>Discount: -₹{discount}</h3>
+                )}
+
+                <h2>Final: ₹{(finalAmount || totalPrice).toFixed(2)}</h2>
+              </div>
 
               <button
                 className="checkout-button"

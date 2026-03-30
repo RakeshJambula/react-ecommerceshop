@@ -16,7 +16,7 @@ export default class ApiService {
   static async registerUser(registration) {
     const response = await axios.post(
       `${this.BASE_URL}/auth/register`,
-      registration
+      registration,
     );
     return response.data;
   }
@@ -24,7 +24,7 @@ export default class ApiService {
   static async loginUser(loginDetails) {
     const response = await axios.post(
       `${this.BASE_URL}/auth/login`,
-      loginDetails
+      loginDetails,
     );
     return response.data;
   }
@@ -49,7 +49,7 @@ export default class ApiService {
     const response = await axios.post(
       `${this.BASE_URL}/cart/add/${productId}`,
       {},
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -58,7 +58,7 @@ export default class ApiService {
     const response = await axios.put(
       `${this.BASE_URL}/cart/increment/${productId}`,
       {},
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -67,7 +67,7 @@ export default class ApiService {
     const response = await axios.put(
       `${this.BASE_URL}/cart/decrement/${productId}`,
       {},
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -83,7 +83,7 @@ export default class ApiService {
           ...this.getHeader(),
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
     return response.data;
   }
@@ -97,7 +97,7 @@ export default class ApiService {
           ...this.getHeader(),
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
     return response.data;
   }
@@ -116,14 +116,14 @@ export default class ApiService {
 
   static async getAllProductsByCategoryId(categoryId) {
     const response = await axios.get(
-      `${this.BASE_URL}/product/get-by-category-id/${categoryId}`
+      `${this.BASE_URL}/product/get-by-category-id/${categoryId}`,
     );
     return response.data;
   }
 
   static async getProductById(productId) {
     const response = await axios.get(
-      `${this.BASE_URL}/product/get-by-product-id/${productId}`
+      `${this.BASE_URL}/product/get-by-product-id/${productId}`,
     );
     return response.data;
   }
@@ -133,7 +133,7 @@ export default class ApiService {
       `${this.BASE_URL}/product/delete/${productId}`,
       {
         headers: this.getHeader(),
-      }
+      },
     );
     return response.data;
   }
@@ -146,7 +146,7 @@ export default class ApiService {
       body,
       {
         headers: this.getHeader(),
-      }
+      },
     );
     return response.data;
   }
@@ -162,7 +162,7 @@ export default class ApiService {
       body,
       {
         headers: this.getHeader(),
-      }
+      },
     );
     return response.data;
   }
@@ -172,7 +172,7 @@ export default class ApiService {
       `${this.BASE_URL}/category/delete/${categoryId}`,
       {
         headers: this.getHeader(),
-      }
+      },
     );
     return response.data;
   }
@@ -183,7 +183,7 @@ export default class ApiService {
     const response = await axios.post(
       `${this.BASE_URL}/order/create`,
       orderRequest,
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -191,7 +191,7 @@ export default class ApiService {
   static async getAllOrders(page = 0, size = 1000) {
     const response = await axios.get(
       `${this.BASE_URL}/order/filter?page=${page}&size=${size}`,
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -206,7 +206,7 @@ export default class ApiService {
     const response = await axios.put(
       `${this.BASE_URL}/order/update-item-status/${orderItemId}?status=${status}`,
       {},
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -217,7 +217,7 @@ export default class ApiService {
     const response = await axios.post(
       `${this.BASE_URL}/payment/create-order/${orderId}`,
       {},
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -237,7 +237,7 @@ export default class ApiService {
       address,
       {
         headers: this.getHeader(),
-      }
+      },
     );
     return response.data;
   }
@@ -248,7 +248,7 @@ export default class ApiService {
       address,
       {
         headers: this.getHeader(),
-      }
+      },
     );
     return response.data;
   }
@@ -273,7 +273,7 @@ export default class ApiService {
   static async getOrderTimeline(orderId) {
     const response = await axios.get(
       `${this.BASE_URL}/order/${orderId}/timeline`,
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -283,7 +283,7 @@ export default class ApiService {
   static async getUserNotifications(userId) {
     const response = await axios.get(
       `${this.BASE_URL}/notifications/user/${userId}`,
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -292,7 +292,7 @@ export default class ApiService {
     const response = await axios.post(
       `${this.BASE_URL}/notifications/${id}/read`,
       {},
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -302,7 +302,7 @@ export default class ApiService {
   static async getReviewsByProduct(productId) {
     const response = await axios.get(
       `${this.BASE_URL}/reviews/product/${productId}`,
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -311,7 +311,7 @@ export default class ApiService {
     const response = await axios.post(
       `${this.BASE_URL}/reviews/add`,
       reviewData,
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -320,7 +320,7 @@ export default class ApiService {
     const response = await axios.put(
       `${this.BASE_URL}/reviews/update/${reviewId}`,
       reviewData,
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -328,7 +328,7 @@ export default class ApiService {
   static async deleteReview(reviewId) {
     const response = await axios.delete(
       `${this.BASE_URL}/reviews/delete/${reviewId}`,
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -338,7 +338,7 @@ export default class ApiService {
     const response = await axios.post(
       `${this.BASE_URL}/wishlist/add/${productId}`,
       {},
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -346,7 +346,7 @@ export default class ApiService {
   static async removeFromWishlist(productId) {
     const response = await axios.delete(
       `${this.BASE_URL}/wishlist/remove/${productId}`,
-      { headers: this.getHeader() }
+      { headers: this.getHeader() },
     );
     return response.data;
   }
@@ -355,6 +355,50 @@ export default class ApiService {
     const response = await axios.get(`${this.BASE_URL}/wishlist/my`, {
       headers: this.getHeader(),
     });
+    return response.data;
+  }
+
+  // ---------------- ADMIN COUPON APIs ----------------
+
+  static async createCoupon(data) {
+    const response = await axios.post(
+      `${this.BASE_URL}/admin/coupon/create`,
+      data,
+      { headers: this.getHeader() },
+    );
+    return response.data;
+  }
+
+  static async getAllCoupons() {
+    const response = await axios.get(`${this.BASE_URL}/admin/coupon/all`, {
+      headers: this.getHeader(),
+    });
+    return response.data;
+  }
+
+  static async toggleCoupon(id, active) {
+    const response = await axios.put(
+      `${this.BASE_URL}/admin/coupon/toggle/${id}?active=${active}`,
+      {},
+      { headers: this.getHeader() },
+    );
+    return response.data;
+  }
+
+  static async deleteCoupon(id) {
+    const response = await axios.delete(
+      `${this.BASE_URL}/admin/coupon/delete/${id}`,
+      { headers: this.getHeader() },
+    );
+    return response.data;
+  }
+
+  static async validateCoupon(body) {
+    const response = await axios.post(
+      `${this.BASE_URL}/admin/coupon/validate`,
+      body,
+      { headers: this.getHeader() },
+    );
     return response.data;
   }
 }

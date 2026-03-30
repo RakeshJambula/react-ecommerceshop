@@ -31,7 +31,7 @@ const AdminOrderDetailsPage = () => {
     try {
       await ApiService.updateOrderStatus(itemId, status);
       setMsg("✔ Status Updated Successfully!");
-      setTimeout(() => navigate("/admin/orders"), 1200);
+      setTimeout(() => navigate("/admin/orders"), 50);
     } catch {
       setMsg("❌ Failed to update status");
     }
@@ -44,12 +44,6 @@ const AdminOrderDetailsPage = () => {
 
         <p>
           <strong>Order ID:</strong> {itemId}
-        </p>
-        <p>
-          <strong>User:</strong> {orderItem?.user?.name}
-        </p>
-        <p>
-          <strong>Current Status:</strong> {orderItem?.status}
         </p>
 
         <div className="select-box">

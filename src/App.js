@@ -26,6 +26,7 @@ import AdminOrderDetailsPage from "./component/admin/AdminOrderDetailsPage";
 import NotificationsPage from "./component/pages/NotificationsPage";
 import TrackOrder from "./component/pages/TrackOrder";
 import Wishlist from "./component/pages/Wishlist";
+import AdminCouponPage from "./component/admin/AdminCouponPage";
 
 function App() {
   return (
@@ -103,6 +104,7 @@ function App() {
             element={<ProtectedRoute element={<NotificationsPage />} />}
           />
           <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/admin/coupons" element={<AdminCouponPage />} />
         </Routes>
         <Footer />
       </CartProvider>

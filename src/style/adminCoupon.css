@@ -1,0 +1,156 @@
+/* ================= PAGE ================= */
+.coupon-page {
+  padding: 30px;
+  text-align: center;
+}
+
+/* ================= FORM ================= */
+.coupon-form {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin: 20px auto;
+  max-width: 1100px;
+}
+
+.coupon-form input,
+.coupon-form select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
+}
+
+.coupon-form input:focus,
+.coupon-form select:focus {
+  border-color: #f68b1e;
+}
+
+/* ================= BUTTON ================= */
+.create-btn {
+  grid-column: span 6;
+  background-color: #f68b1e;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.create-btn:hover {
+  background-color: #d97706;
+  transform: scale(1.02);
+}
+
+/* ================= TABLE ================= */
+.coupon-table {
+  width: 100%;
+  margin-top: 30px;
+  border-collapse: collapse;
+}
+
+.coupon-table thead {
+  background-color: #f68b1e;
+  color: white;
+}
+
+.coupon-table th,
+.coupon-table td {
+  padding: 12px;
+  text-align: center;
+}
+
+.coupon-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.coupon-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* ================= STATUS BADGE ================= */
+.status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+/* ACTIVE */
+.status.active {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+/* INACTIVE */
+.status.inactive {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* ================= TOGGLE BUTTON ================= */
+.toggle-btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  transition: 0.3s;
+}
+
+/* ENABLE (GREEN) */
+.toggle-btn.enable {
+  background-color: #16a34a;
+}
+
+/* DISABLE (RED) */
+.toggle-btn.disable {
+  background-color: #dc2626;
+}
+
+/* HOVER */
+.toggle-btn:hover {
+  opacity: 0.9;
+}
+
+/* CLICK EFFECT */
+.toggle-btn:active {
+  transform: scale(0.95);
+}
+
+/* ================= TOAST ================= */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  z-index: 1000;
+  animation: slideIn 0.3s ease;
+}
+
+.toast.success {
+  background-color: #22c55e;
+}
+
+.toast.error {
+  background-color: #ef4444;
+}
+
+/* TOAST ANIMATION */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
